@@ -44,7 +44,7 @@ while menu != '2':
         else:
             print("No hay árbol porque no fue aceptada.")
     
-    elif menu == 2:
+    elif menu == "2":
         print("Gracias por utilizar el programa.")
     
     else: 
@@ -54,4 +54,4 @@ while menu != '2':
 # funcionales = "she cuts".split()       #"he drinks the juice".split() ##"the dog cuts with the knife".split()  ### "she drinks a beer".split() ####"the cat cuts the meat with a spoon".split()
 # no_funcionales = "the dog eats cake".split() #"cat in the oven".split() ##"he drinks juice".split() ###
 
-#nonsense = "she cooks a fork".split()
+#nonsense = "she cooks a fork".split() #the dog drinks the knife 
