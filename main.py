@@ -3,9 +3,10 @@ from parte1 import chomsky
 from parte2 import CYK, build_tree, tree_to_string
 import time
 
-#entrada (parte 1)
-with open("gramatica.json", "r") as archivo:
+#entrada 
+with open("gramatica.json", "r") as archivo: #Para probar cualquier otra gramática, cargarla en "gramatica2.json", con la estructura ya definida y cambiar esta línea (solo agregarle el 2)
     gramaticaOriginal = json.load(archivo)
+#Se utiliza el '?' como épsilon al cargar la gramática
 
 variables = gramaticaOriginal['variables']
 terminales = gramaticaOriginal['terminales']
@@ -17,7 +18,6 @@ variablesC, terminalesC, simboloInicialC, produccionesC = chomsky(variables, ter
 menu = 0
 print("Bienvenido")
 print("Melisa Mendizabal - Renato Rojas")
-#Parte 2
 while menu != '2':
     print('')
     print("1. Comprobar si una cadena está en la gramática")
@@ -27,18 +27,25 @@ while menu != '2':
     if menu == '1':
 
         w = input("Ingrese una cadena: ")
-        #cadena = "the cat drinks the beer".split()
-        cadena = w.split()
-        # cadena = input().split()
-        chronoStart = time.perf_counter()
-        aceptado, tabla, back = CYK(produccionesC, cadena)
-        chronoEnd = time.perf_counter()
+        cadena = w.split() #La cadena vacía ingresarla vacía (solo un enter en el input)
+        if len(cadena) == 0:
+            chronoStart = time.perf_counter()
+            eps_present = any(len(rhs) == 0 for rhs in produccionesC.get(simboloInicialC, []))
+            aceptado = eps_present
+            chronoEnd = time.perf_counter()
+        else:
+            chronoStart = time.perf_counter()
+            aceptado, tabla, back = CYK(produccionesC, cadena)
+            chronoEnd = time.perf_counter()
         print("Cadena (partida):",cadena)
         print("¿Cadena aceptada?:", aceptado)
         print("Tiempo tomado para la verificación:", chronoEnd-chronoStart)
         if aceptado:
-            # árbol
-            tree = build_tree(back, cadena, "So", 0, len(cadena) - 1)
+            if len(cadena) == 0:
+                tree = (simboloInicialC, '?')
+            else:
+                # árbol
+                tree = build_tree(back, cadena, simboloInicialC, 0, len(cadena) - 1)
             print("Árbol:")
             print(tree_to_string(tree))
         else:
